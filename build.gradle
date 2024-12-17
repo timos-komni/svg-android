@@ -1,43 +1,22 @@
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'signing'
-
-group = 'com.github.bigfishcat.android'
-archivesBaseName = "svg-android"
-version = '2.0.8'
-
-description = """svg-android"""
-
-sourceCompatibility = '1.6'
-targetCompatibility = '1.6'
-
-repositories {
-     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-     maven { url "http://repo.maven.apache.org/maven2" }
-}
-
-dependencies {
-    compile(group: 'com.google.android', name: 'android', version:'2.1_r1')
-}
-
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-}
-
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-artifacts {
-    archives javadocJar, sourcesJar
-}
-
-uploadArchives {
+buildscript {
     repositories {
-        mavenDeployer {
-            repository(url: uri('out'))
-        }
+        mavenCentral()
+        google()
+        gradlePluginPortal()
     }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.7.3'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
 }

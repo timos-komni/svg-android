@@ -1,1 +1,2 @@
+include(':svg-android')
 rootProject.name = 'svg-android'
