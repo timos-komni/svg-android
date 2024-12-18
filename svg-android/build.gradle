@@ -20,9 +20,10 @@ android {
     compileSdk 34
 
     defaultConfig {
-        minSdk = 2
-        versionCode = libraryVersionCode
-        versionName = libraryVersionName
+        minSdk 2
+        targetSdk 33
+        versionCode libraryVersionCode
+        versionName libraryVersionName
     }
 
     compileOptions {
@@ -35,26 +36,13 @@ android {
             minifyEnabled false
         }
     }
-}
 
-tasks.register('javadoc', Javadoc) {
-    failOnError false
-    source = android.sourceSets.main.java.sourceFiles
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-tasks.register('javadocJar', Jar) {
-    archiveClassifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-tasks.register('sourcesJar', Jar) {
-    archiveClassifier = 'sources'
-    from android.sourceSets.main.java.srcDirs
-}
-
-artifacts {
-    archives javadocJar, sourcesJar
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
 }
 
 afterEvaluate {
@@ -68,9 +56,7 @@ afterEvaluate {
                     name = 'svg-android'
                     description = 'Brings SVG parsing and drawing functionality to Android devices. Forked from the original project at https://github.com/japgolly/svg-android (which was forked from http://code.google.com/p/svg-android/)'
                 }
-                afterEvaluate {
-                    from components.findByName('release')
-                }
+                from components.release
             }
         }
     }
