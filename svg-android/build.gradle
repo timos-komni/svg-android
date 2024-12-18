@@ -59,16 +59,6 @@ artifacts {
 
 afterEvaluate {
     publishing {
-        repositories {
-            maven {
-                url = uri("out")
-            }
-        }
-    }
-}
-
-afterEvaluate {
-    publishing {
         publications {
             release(MavenPublication) {
                 groupId = group
